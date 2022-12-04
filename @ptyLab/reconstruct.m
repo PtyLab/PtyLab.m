@@ -13,9 +13,6 @@ disp('start reconstruction')
 
 switch obj.params.engine
     
-    % steepest descent
-    case 'SD'
-        obj = SD(obj); % sequential SD
     % PIE-type engines
     case 'ePIE' 
         % standard ePIE
@@ -26,36 +23,39 @@ switch obj.params.engine
     case 'mPIE' 
         % momentum PIE
         obj = mPIE(obj);
-    case 'pcPIE'
-        % position correctiion PIE
-        obj = pcPIE(obj); 
     case 'OPRP'
         % orthogonal probe relaxation (OPR)
         obj = OPRP(obj);
+    case 'pcPIE'
+        % position correctiion PIE
+        obj = pcPIE(obj);   
     case 'e3PIE'
         % multiSlice PIE
         obj = e3PIE(obj);
-    case 'm3PIE'
-        % multiSlicePIE with momentum
-        obj = m3PIE(obj);
-    case 'kPIE' % using k means clustering
-        obj = kPIE(obj);
-    case 'zPIE' % axial position correction
+    case 'zPIE' 
+        % axial position correction
         obj = zPIE(obj);
     case 'pSD'
+        % parallel steepest descent
         obj = pSD(obj);
     case 'PIE'
+        % original PIE algorithm
         obj = PIE(obj);
     case 'adam_FP'
+        % accelerated solver for FP
         obj = adam_FP(obj);
     case 'adam'
+        % accelerated solver for CP
         obj = adam(obj);
     case 'qNewton'
+        % quasi-Newton algorithm
         obj = qNewton(obj);
     case 'mqNewton'
+        % momentum-accelerated quasi Newton
         obj = mqNewton(obj);
     otherwise
         error('engine not specified')
+        
 end
 
 end

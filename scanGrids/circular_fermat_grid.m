@@ -7,10 +7,8 @@ close all
 restoredefaultpath
 tic
 % add relevant folders
-switch getenv('COMPUTERNAME')
-    case 'DESKTOP-MCS5K1H'
-        toolboxFolder = 'C:\Users\Lars Loetgering\Dropbox\Codes\ptyLab';
-end
+directory_info = dir();
+toolboxFolder = erase( directory_info(1).folder, 'scanGrids');
         
 addpath(genpath( toolboxFolder ));
 cd(toolboxFolder);

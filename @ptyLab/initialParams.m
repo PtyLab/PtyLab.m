@@ -6,6 +6,7 @@ p.addParameter('absorbingProbeBoundary', false) % set probe to zero outside 2 x 
 p.addParameter('absObjectSwitch', false) % impose object being real and positiv
 p.addParameter('absObjectStepSize', 0.05) % step size for absObjectSwitch
 p.addParameter('batchSize', 10)         % fft-block size for parallel engines
+p.addParameter('backgroundModeSwitch',false) % contrains mode for background 
 p.addParameter('betaObject',0.25)       % mPIE feedback parameter (object)
 p.addParameter('betaProbe',0.25)        % mPIE feedback parameter (probe)
 p.addParameter('comStabilizationSwitch', true)% if true, the probe is centered
@@ -19,6 +20,7 @@ p.addParameter('initialObject','ones')  % choose initial object ('ones', 'rand')
 p.addParameter('initialProbe','circ')   % choose initial probe ('obes', 'rand')
 p.addParameter('intensityConstraint','standard') % ('standard', 'sigmoid')
 p.addParameter('makeGIF', false) % probe orthogonalization frequency
+p.addParameter('modulusEnforcedProbeSwitch', false) % activates MEP update
 p.addParameter('npsm',1)                % number of probe state mixtures
 p.addParameter('nosm',1)                % number of object state mixtures
 p.addParameter('numIterations',1)       % number of iterations
@@ -27,7 +29,9 @@ p.addParameter('objectUpdateStart',1)   % iteration when object update starts (m
 p.addParameter('orthogonalizationFrequency', 10) % probe orthogonalization frequency
 p.addParameter('positionOrder','random')% position order for sequential solvers ('sequential' or 'random')
 p.addParameter('probePowerCorrectionSwitch', true)  % switch to indicate if probe power correction is applied
+p.addParameter('probeSmoothenessSwitch', false) % imposes probe smootheness
 p.addParameter('saveMemory', true)      % if true, then the algorithm is run with low memory consumption (e.g. detector error is not saved)
+p.addParameter('showObjectSpectrum',false) % show Fourier transform of object
 p.addParameter('singleSwitch', true)    % if true, data is converted to single to save memory and processing time
 p.addParameter('smoothenessSwitch', false)  % if true, apply smoothness constraint to object
 p.addParameter('objectTVregSwitch', false) % TV regularization
@@ -46,17 +50,21 @@ obj.params.betaProbe = p.Results.betaProbe;
 % algorithmic parameters
 obj.params.absorbingProbeBoundary = p.Results.absorbingProbeBoundary;
 obj.params.absObjectSwitch = p.Results.absObjectSwitch;
-obj.params.positionOrder = p.Results.positionOrder;
-obj.params.intensityConstraint = p.Results.intensityConstraint;
-obj.params.probePowerCorrectionSwitch = p.Results.probePowerCorrectionSwitch;
-obj.params.smoothenessSwitch = p.Results.smoothenessSwitch;
+obj.params.backgroundModeSwitch = p.Results.backgroundModeSwitch;
+obj.params.batchSize = p.Results.batchSize;
 obj.params.comStabilizationSwitch = p.Results.comStabilizationSwitch;
 obj.params.gpuSwitch = p.Results.gpuSwitch;
+obj.params.intensityConstraint = p.Results.intensityConstraint;
+obj.params.modulusEnforcedProbeSwitch = p.Results.modulusEnforcedProbeSwitch;
+obj.params.positionOrder = p.Results.positionOrder;
+obj.params.probePowerCorrectionSwitch = p.Results.probePowerCorrectionSwitch;
+obj.params.probeSmoothenessSwitch = p.Results.probeSmoothenessSwitch;
+obj.params.smoothenessSwitch = p.Results.smoothenessSwitch;
 obj.params.saveMemory = p.Results.saveMemory;
-obj.params.orthogonalizationFrequency = p.Results.orthogonalizationFrequency;
-obj.params.batchSize = p.Results.batchSize;
-obj.params.zPIEgradientStepSize = p.Results.zPIEgradientStepSize;
 obj.params.objectTVregSwitch = p.Results.objectTVregSwitch;
+obj.params.orthogonalizationFrequency = p.Results.orthogonalizationFrequency;
+obj.params.zPIEgradientStepSize = p.Results.zPIEgradientStepSize;
+
 % general parameters
 obj.params.npsm = p.Results.npsm;
 obj.params.nosm = p.Results.nosm;
@@ -64,6 +72,9 @@ obj.params.nosm = p.Results.nosm;
 % detector
 obj.params.deleteFrames = p.Results.deleteFrames;
 obj.params.FourierMaskSwitch = p.Results.FourierMaskSwitch;
+
+% monitoring
+obj.monitor.showObjectSpectrum = p.Results.showObjectSpectrum;
 
 % reconstruction
 obj.params.numIterations = p.Results.numIterations;

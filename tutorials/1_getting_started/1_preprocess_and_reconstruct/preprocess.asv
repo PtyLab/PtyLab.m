@@ -93,8 +93,6 @@ if exportBool
     obj.export.exportID = [obj.export.fileName];
     obj.exportObj
 end
-
-%% show raw data
 obj.showPtychogram
 toc
 

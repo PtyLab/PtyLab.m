@@ -32,9 +32,8 @@ obj = obj.initialParams(...
     'fontSize', 17);
 
 %% manual params
-
-obj.params.objectPlot = 'abs';          % 'complex', 'piComlex', 'abs', 'angle', or 'piAngle' 
-obj.params.intensityConstraint = 'Anscombe'; % 'Anscombe', 'ProxAnscombe', 'Poisson', 'ProxPoisson', 'Gaussian', 'BoseEinstein'
+obj.params.objectPlot = 'abs';              % 'complex', 'piComlex', 'abs', 'angle', or 'piAngle' 
+obj.params.intensityConstraint = 'Anscombe';% 'Anscombe', 'ProxAnscombe', 'Poisson', 'ProxPoisson', 'Gaussian', 'BoseEinstein'
 obj.params.numIterations = 1000;
 
 % main parameters

@@ -14,7 +14,7 @@ u = gather(u);
 r = abs(u);
 r = r / ( max(r(:)) + eps );
 if ~isempty(p.Results.intensityScale)
-    r = posit(r - p.Results.intensityScale(1));
+    r = nonnegative(r - p.Results.intensityScale(1));
     r = r/(p.Results.intensityScale(2) - p.Results.intensityScale(1));
 end
 

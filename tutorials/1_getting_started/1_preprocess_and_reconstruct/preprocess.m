@@ -21,7 +21,7 @@ obj = ptyLab;
 obj.export.exportPath = 'C:\Users\Lars Loetgering\Documents\ptyLabExport';
 % change this depending on computer used for preprocessing
 obj.export.filePath = 'C:\Users\Lars Loetgering\Documents\fracPtyRaw\ptyLab_data\ptyLab_helical_beam.h5';
-obj.export.fileName = 'recent'; % this can be defined and determines output file name
+obj.export.fileName = 'recent'; % this determines output file name
 obj.params.verboseLevel = 'low';
 
 %% read hdf5 file

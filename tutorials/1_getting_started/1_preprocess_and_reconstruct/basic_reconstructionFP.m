@@ -24,7 +24,7 @@ obj.ptychogram = rot90( obj.ptychogram, 2);
 obj.positions0 = fliplr(obj.positions0);
 
 % subtract a bit of background
-obj.ptychogram = nonnegative( obj.ptychogram - 40 );
+obj.ptychogram = nonnegative( obj.ptychogram - 0 );
 %%
 obj.entrancePupilDiameter = obj.params.NA * obj.dxo;
 obj.zo = obj.params.zled;
@@ -38,8 +38,10 @@ obj = obj.initialParams(...
 %% manual initialization
 
 
+% obj.object = ifft2c(imresize(sqrt( mean(obj.ptychogram,3) ), ...
+%                     obj.No * [1,1]))/(obj.No/128);
 obj.object = ifft2c(imresize(sqrt( mean(obj.ptychogram,3) ), ...
-                    obj.No * [1,1]))/(obj.No/128);
+                    obj.No * [1,1]));
 obj.probe = circ(obj.Xp, obj.Yp, 2*obj.params.NA / obj.wavelength);
 obj.params.probeWindow = circ(obj.Xp, obj.Yp, obj.entrancePupilDiameter*1.5);
 

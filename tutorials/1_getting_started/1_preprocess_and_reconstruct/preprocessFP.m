@@ -14,7 +14,7 @@ addpath(genpath(toolboxFolder))
 obj = ptyLab;
 % change this depending on computer used for preprocessing
 obj.export.exportPath = 'C:\Users\Lars Loetgering\Documents\ptyLabExport';
-obj.export.filePath = 'C:\Users\Lars Loetgering\Documents\fracPtyRaw\ptyLab_data\LungCarcinomaFPM.hdf5';
+obj.export.filePath = 'C:\Users\Lars Loetgering\Documents\fracPtyRaw\ptyLab_data\USAFTargetFPM.hdf5';
 obj.export.fileName = 'recent'; % this determines output file name
 obj.params.verboseLevel = 'low';
 obj.operationMode = 'FPM';

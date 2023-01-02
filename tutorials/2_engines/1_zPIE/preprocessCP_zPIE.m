@@ -1,6 +1,3 @@
-% download helical beam data at 
-% https://figshare.com/articles/dataset/PtyLab_helical_beam_data/21671516
-
 % preprocessing
 
 clear
@@ -14,7 +11,7 @@ set(0,'defaultAxesFontName', 'serif')
 
 % add toolbox folders
 directory_info = dir();
-toolboxFolder = erase( directory_info(1).folder, 'tutorials\1_getting_started\1_preprocess_and_reconstruct');
+toolboxFolder = erase( directory_info(1).folder, 'tutorials\2_engines\1_zPIE');
 
 %%
 cd(toolboxFolder);
@@ -23,7 +20,7 @@ addpath(genpath(toolboxFolder))
 obj = ptyLab;
 % change this depending on computer used for preprocessing
 obj.export.exportPath = 'C:\Users\Lars Loetgering\Documents\ptyLabExport';
-obj.export.filePath = 'C:\Users\Lars Loetgering\Documents\fracPtyRaw\ptyLab_data\ptyLab_helical_beam.h5';
+obj.export.filePath = 'C:\Users\Lars Loetgering\Documents\fracPtyRaw\ptyLab_data\ptyLab_zPIE.h5';
 obj.export.fileName = 'recent'; % this determines output file name
 obj.params.verboseLevel = 'low';
 
@@ -38,6 +35,17 @@ obj.zo = h5read(obj.export.filePath,'/zo');
 obj.wavelength = h5read(obj.export.filePath,'/wavelength');
 obj.numFrames = size(obj.ptychogram,3);
 toc
+
+%% set z-distance incorrectly 
+% this will be corrected during the reconstruction using the zPIE
+% calibration engine
+
+obj.zo = 33e-3;
+
+%% rotate ptychogram and encoder to monitor data in upright position
+
+obj.ptychogram = fliplr(rot90(obj.ptychogram, 1));
+obj.params.encoder = [-obj.params.encoder(:,2), -obj.params.encoder(:,1)];
 
 %% sampling
 

@@ -33,7 +33,7 @@ for loop = 1:obj.params.numIterations
         for k = 1:length(dz)
             imProp = aspw(w .* obj.object(end/2-n/2+1:end/2+n/2, end/2-n/2+1:end/2+n/2), dz(k), obj.wavelength, n*obj.dxo);
             
-            % TV approach
+            % TV approach (other sharpness metrics are possible here)
             aleph = 1e-2;
             gradx = imProp - circshift(imProp, [0 1]);
             grady = imProp - circshift(imProp, [1 0]);
@@ -49,7 +49,7 @@ for loop = 1:obj.params.numIterations
     
     obj.params.zHistory = [obj.params.zHistory, gather(obj.zo)];
     
-    disp(['position updated: z = ', num2str(obj.zo * 1e3), ' mm (dz = ', num2str(round(zMomentum * 1e7)/10), ' um)' ])
+    disp(['updated distance estimate: z = ', num2str(obj.zo * 1e3), ' mm (dz = ', num2str(round(zMomentum * 1e7)/10), ' um)' ])
     
     % reset coordinates
     obj.zo = zNew;
@@ -58,10 +58,9 @@ for loop = 1:obj.params.numIterations
     if ~strcmp(obj.propagator.type, 'aspw')
         obj.dxo = obj.wavelength * obj.zo / obj.Ld;
         obj.positions = round( obj.params.encoder / obj.dxo );
-        obj.positions = obj.positions + obj.No/2 - round(obj.Np/2);
+        obj.positions = obj.positions - floor(mean(obj.positions, 1)) + obj.No/2 - round(obj.Np/2);
         
         % object coordinates
-%         obj.No = 2^12 + 2^11;
         obj.Lo = obj.No * obj.dxo;
         obj.xo = (-obj.No/2:obj.No/2-1) * obj.dxo;
         [obj.Xo, obj.Yo] = meshgrid(obj.xo);
@@ -127,7 +126,7 @@ for loop = 1:obj.params.numIterations
         obj.object(obj.params.objectROI(1):obj.params.objectROI(2), obj.params.objectROI(3):obj.params.objectROI(4)) = ...
             (...
             (1-obj.params.objectSmoothnessAleph) * abs(obj.object(obj.params.objectROI(1):obj.params.objectROI(2), obj.params.objectROI(3):obj.params.objectROI(4))) + ...
-            obj.params.objectSmoothnessAleph * convolve2( abs( obj.object(obj.params.objectROI(1):obj.params.objectROI(2), obj.params.objectROI(3):obj.params.objectROI(4))) , h1,'wrap')) .* ...
+            obj.params.objectSmoothnessAleph * normconv2( abs( obj.object(obj.params.objectROI(1):obj.params.objectROI(2), obj.params.objectROI(3):obj.params.objectROI(4))) , h1)) .* ...
             exp(1i * angle(obj.object(obj.params.objectROI(1):obj.params.objectROI(2), obj.params.objectROI(3):obj.params.objectROI(4))));
         
         obj.object = 0.99 * obj.object + 0.01 * (mean(abs(obj.object(:))));
@@ -137,7 +136,7 @@ for loop = 1:obj.params.numIterations
         h2 = fspecial('disk', obj.params.probeSmoothenessWidth);
         for k = 1:obj.params.npsm
             obj.probe(:,:,k) = (1-obj.params.probeSmoothnessAleph) * obj.probe(:,:,k) + ...
-                obj.params.probeSmoothnessAleph * convolve2(obj.probe(:,:,k), h2, 'same');
+                obj.params.probeSmoothnessAleph * normconv2(obj.probe(:,:,k), h2);
         end
     end
     
@@ -149,13 +148,6 @@ for loop = 1:obj.params.numIterations
     % center of mass stabilization
     if obj.params.comStabilizationSwitch
         centerOfMassStabilization(obj);
-    end
-    
-    if obj.params.objectContrastSwitch
-        % this is intended to slowly push non-measured object region to 
-        % abs value lower than the max abs inside object roiallowing for good contrast when
-        % monitoring object
-        obj.object = 0.995 * obj.object + 0.005 * mean(mean(abs(obj.object(obj.params.objectROI(1):obj.params.objectROI(2), obj.params.objectROI(3):obj.params.objectROI(4),1 )))); 
     end
     
     % show reconstruction

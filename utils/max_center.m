@@ -1,4 +1,4 @@
-function r = center( P )
+function r = max_center( P )
 % center quadratic probe function (or mode stack)
 
 N = size(P,1);
@@ -11,8 +11,9 @@ I = sum( abs(P).^2, 3 );
 % normalize
 I = I / sum2(I);
 
-xs = sum2(I.*X);
-ys = sum2(I.*Y);
+[row, col] = find( I == max(I(:)));
+xs = X(row, col);
+ys = Y(row, col);
 
 Fx = X/N;
 Fy = Y/N;

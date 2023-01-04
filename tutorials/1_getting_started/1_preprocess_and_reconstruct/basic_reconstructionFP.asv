@@ -96,15 +96,15 @@ obj.monitor.objectMax = 1;                  % control maximum brightness in obje
 obj.monitor.showObjectSpectrum = false;     % show object spectrum
 obj = reconstruct(obj);
 
-%% finally remove quadratic field curvature of non-telecentric imaging system
+%% finally remove quadratic phase of non-telecentric imaging system
 % see details in 
 % Aidukas, Tomas, Lars Loetgering, and Andrew R. Harvey. 
 % "Addressing phase-curvature in Fourier ptychography." 
 % Optics Express 30.13 (2022): 22421-22434.
 
 figure(3)
-hsvplot(ifft2c(obj.object) .* conj(QP))
-axis off, title('field curvature removed')
+hsvplot()
+
 %% export data
 
 % switch to CPU

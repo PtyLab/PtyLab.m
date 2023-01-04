@@ -14,7 +14,8 @@ addpath(genpath(toolboxFolder))
 obj = ptyLab;
 % change this depending on computer used for preprocessing
 obj.export.exportPath = 'C:\Users\Lars Loetgering\Documents\ptyLabExport';
-obj.export.filePath = 'C:\Users\Lars Loetgering\Documents\fracPtyRaw\ptyLab_data\USAFTargetFPM.hdf5';
+obj.export.filePath = 'C:\Users\Lars Loetgering\Documents\fracPtyRaw\ptyLab_data\LungCarcinomaFPM.hdf5';
+% obj.export.filePath = 'C:\Users\Lars Loetgering\Documents\fracPtyRaw\ptyLab_data\USAFTargetFPM.hdf5';
 obj.export.fileName = 'recent'; % this determines output file name
 obj.params.verboseLevel = 'low';
 obj.operationMode = 'FPM';
@@ -32,6 +33,11 @@ obj.params.zled = h5read(obj.export.filePath,'/zled');
 obj.params.NA = h5read(obj.export.filePath,'/NA');
 obj.numFrames = size(obj.ptychogram,3);
 toc
+
+%% correct orientation of encoder and ptychogram
+
+obj.ptychogram = fliplr(rot90( obj.ptychogram, 1));
+obj.params.encoder = -[obj.params.encoder(:,1), obj.params.encoder(:,2)];
 
 %% set experimental specifications
 
@@ -56,11 +62,15 @@ obj.xp = (-obj.Np/2:obj.Np/2-1)*obj.dxp;
 [obj.Xp, obj.Yp] = meshgrid(obj.xp);
 
 %% convert k-space positions (as given by obj.params.encoder) into integer-valued positions
-
 % convert positions into pixels
-obj.positions0 = round( obj.params.encoder * obj.dxo );
+prefactor = obj.Ld / obj.params.magnification / obj.wavelength;
+obj.positions0 = round( prefactor * obj.params.encoder ./ ...
+    sqrt(obj.params.encoder(:,1).^2 + obj.params.encoder(:,2).^2 + obj.params.zled^2) );
 % center within object grid
-obj.positions0  = obj.positions0 - floor(mean(obj.positions0, 1))  + obj.No/2 - round(obj.Np/2);
+% obj.positions0  = obj.positions0 - floor(mean(obj.positions0, 1))  + obj.No/2 - round(obj.Np/2);
+% obj.positions0  = obj.positions0 - floor(mean(obj.positions0, 1))  + obj.No/2;
+obj.positions0  = obj.positions0 + obj.No/2 - round(obj.Np/2);
+
 % take only the frames needed (if numFrames smaller than the number of positions in the file)
 obj.positions0  = obj.positions0(1:obj.numFrames,:);
 

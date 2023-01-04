@@ -11,7 +11,7 @@ switch obj.operationMode
         object = obj.object(obj.params.objectROI(1):obj.params.objectROI(2), obj.params.objectROI(3):obj.params.objectROI(4));
         dxo = obj.dxo;
     case 'FPM'
-        object = ifft2c(obj.object);
+        object = ifft2c( center(obj.object) );
         dxo = 1/obj.Lo;
 end
 
@@ -44,11 +44,19 @@ hsvmodeplot(obj.probe(obj.params.probeROI(1):obj.params.probeROI(2),obj.params.p
 % hsvmodeplot(probeTemp(obj.params.probeROI(1):obj.params.probeROI(2),obj.params.probeROI(3):obj.params.probeROI(4),:),...
 %     'normalize', true,'pixelSize',obj.dxp)
 
+switch obj.operationMode
+    case 'CPM'
+        ptitle = 'probe';
+    otherwise
+        ptitle = 'pupil';
+end
+            
+
 if isfield(obj.params,'purity')
     % initialize error
-    title({'probe',['purity: ',num2str(round(obj.params.purity*100)),' %']},'FontWeight','normal')
+    title({ptitle,['purity: ',num2str(round(obj.params.purity*100)),' %']},'FontWeight','normal')
 else
-    title({'probe',' '},'FontWeight','normal')
+    title({ptitle,' '},'FontWeight','normal')
 end
 set(gca,'FontSize',obj.monitor.fontSize)
 

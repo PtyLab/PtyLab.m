@@ -129,7 +129,7 @@ for loop = 1:obj.params.numIterations
         h2 = gaussian2D(2*obj.params.probeSmoothenessWidth + 1, obj.params.probeSmoothenessWidth);
         for k = 1:obj.params.npsm
             obj.probe(:,:,k) = (1-obj.params.probeSmoothnessAleph) * obj.probe(:,:,k) + ...
-                obj.params.probeSmoothnessAleph * convolve2(obj.probe(:,:,k), h2, 'same');
+                obj.params.probeSmoothnessAleph * normconv2(obj.probe(:,:,k), h2);
         end
     end
     

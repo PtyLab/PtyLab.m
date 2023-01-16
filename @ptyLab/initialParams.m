@@ -271,13 +271,13 @@ end
 
 if ~isfield(obj.params, 'probeROI')
     % set probe ROI
-    n = 1;
-    r = obj.entrancePupilDiameter/obj.dxp;
-    obj.params.probeROI = ...
-        [max(1,obj.Np/2 - n*r), min(obj.Np,obj.Np/2 + n*r),...
-        max(1,obj.Np/2 - n*r), min(obj.Np,obj.Np/2 + n*r)];
-    obj.params.probeROI = round(obj.params.probeROI);
-    
+%     n = 1;
+%     r = obj.entrancePupilDiameter/obj.dxp;
+%     obj.params.probeROI = ...
+%         [max(1,obj.Np/2 - n*r), min(obj.Np,obj.Np/2 + n*r),...
+%         max(1,obj.Np/2 - n*r), min(obj.Np,obj.Np/2 + n*r)];
+%     obj.params.probeROI = round(obj.params.probeROI);
+   obj.params.probeROI = [1, obj.Np, 1, obj.Np]; 
 end
 
 if ~isfield(obj.params, 'errorAtPos')

@@ -55,7 +55,7 @@ obj.params.engine = 'mPIE';
 
 % main parameters
 obj.monitor.figureUpdateFrequency = 20; % frequency of reconstruction monitor 
-obj.params.numIterations = 200;        % total number of iterations
+obj.params.numIterations = 10000;         % total number of iterations
 obj.params.betaObject = 0.25;           % gradient step size object
 obj.params.betaProbe = 0.25;            % gradient step size probe
 obj.params.npsm = 1;                    % number of probe/pupil state mixtures
@@ -63,8 +63,8 @@ obj.params.FourierMaskSwitch = false;   % apply mask to corrupted pixels
 obj.params.gpuSwitch = true;            % gpuSwitch
 
 % object regularization 
-obj.params.objectSmoothenessSwitch = true;     % if true, impose smootheness
-obj.params.objectSmoothenessWidth = 2;          % # pixels over which object is assumed fairly smooth
+obj.params.objectSmoothenessSwitch = true;      % if true, impose smootheness
+obj.params.objectSmoothenessWidth = 3;          % # pixels over which object is assumed fairly smooth
 obj.params.objectSmoothnessAleph = 1e-2;        % relaxation constant that determines strength of regularization
 obj.params.absObjectSwitch = false;             % force the object to be abs-only
 obj.params.absObjectBeta = 1e-2;                % relaxation parameter for abs-only constraint
@@ -72,10 +72,10 @@ obj.params.objectContrastSwitch = false;        % pushes object to zero outside 
 obj.params.objectTVregSwitch = false;           % TV regularization on object
 
 % probe regularization 
-obj.params.probeSmoothenessSwitch = true;      % enforce probe smootheness 
+obj.params.probeSmoothenessSwitch = false;       % enforce probe smootheness 
 obj.params.probeSmoothnessAleph = 1e-2;         % relaxation parameter for probe smootheness
 obj.params.probeSmoothenessWidth = 3;           % loose object support diameter
-obj.params.absorbingProbeBoundary = false;       % controls if probe has period boundary conditions (zero)
+obj.params.absorbingProbeBoundary = false;      % controls if probe has period boundary conditions (zero)
 obj.params.probePowerCorrectionSwitch = false;  % probe normalization to measured PSD
 obj.params.modulusEnforcedProbeSwitch = false;  % enforce empty beam
 obj.params.comStabilizationSwitch = false;      % center of mass stabilization for probe

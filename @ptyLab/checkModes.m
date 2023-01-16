@@ -1,11 +1,11 @@
 function checkModes(obj)
-% checkModes:       adjust probe and object array 
-%dimensions if changed during reconstruction
+% checkModes: adjust probe and object array 
+% dimensions if changed during reconstruction
 
 % resize probe array
 if size(obj.probe, 3) < obj.params.npsm
     % in this case, add probe modes
-    
+    probeEnergyBefore = norm(obj.probe(:), 2);
     addNum = obj.params.npsm - size(obj.probe, 3);
     
     disp('check modes...')
@@ -38,9 +38,15 @@ else
     probeModesChanged = false;
 end
 
+% if probeModesChanged
+%     % renormalize of probe energy
+%     obj.probe = obj.probe / sqrt( sum( obj.probe(:) .* conj(obj.probe(:)) ) ) * obj.params.probePowerCorrection;
+% end
 if probeModesChanged
+%     probeEnergyAfter = norm(obj.probe(:), 2);
     % renormalize of probe energy
-    obj.probe = obj.probe / sqrt( sum( obj.probe(:) .* conj(obj.probe(:)) ) ) * obj.params.probePowerCorrection;
+    obj.probe = obj.probe / sqrt( sum( obj.probe(:) .* conj(obj.probe(:)) ) );
+%     obj.probe = obj.probe / probeEnergyAfter * probeEnergyBefore;
 end
 
 % resize object array

@@ -1,6 +1,12 @@
 function obj = lsqPIE(obj)
 % automatic step size ePIE
 % as_ePIE
+% see 
+% Odstrčil, Michal, Andreas Menzel, and Manuel Guizar-Sicairos. 
+% "Iterative least-squares solver for generalized maximum-likelihood ptychography." 
+% Optics express 26.3 (2018): 3108-3123.
+% note: the algorithm used here (lsqPIE) uses the adapted step size
+% as reported in the above reference (for only a single scan position, not batches)
 obj.params.stepProbeHistory = zeros(obj.params.npsm,obj.params.numIterations);
 obj.params.stepObjectHistory = zeros(obj.params.numIterations,1);
 for loop = 1:obj.params.numIterations

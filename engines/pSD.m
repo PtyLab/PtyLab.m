@@ -48,12 +48,12 @@ for loop = 1:obj.params.numIterations
         row = obj.positions(k,1);
         col = obj.positions(k,2);
         
-        objectUpdateNumerator(row:row+obj.Np-1,col:col+obj.Np-1,:) = objectUpdateNumerator(row:row+obj.Np-1,col:col+obj.Np-1,:) + abs(obj.probe) / max(abs(obj.probe(:))) .* conj(obj.probe) .* DELTA(:,:,:,k);
-        objectUpdateDenominator(row:row+obj.Np-1,col:col+obj.Np-1) = objectUpdateDenominator(row:row+obj.Np-1,col:col+obj.Np-1,:) + real(sum(abs(obj.probe).^2,3));
-        
-        %         objectUpdateNumerator(row:row+obj.Np-1,col:col+obj.Np-1,:) = objectUpdateNumerator(row:row+obj.Np-1,col:col+obj.Np-1,:) + sum(conj(obj.probe) .* DELTA(:,:,:,k),3);
-%         objectUpdateNumerator(row:row+obj.Np-1,col:col+obj.Np-1,:) = objectUpdateNumerator(row:row+obj.Np-1,col:col+obj.Np-1,:) + conj(obj.probe) .* DELTA(:,:,:,k);
+%         objectUpdateNumerator(row:row+obj.Np-1,col:col+obj.Np-1,:) = objectUpdateNumerator(row:row+obj.Np-1,col:col+obj.Np-1,:) + abs(obj.probe) / max(abs(obj.probe(:))) .* conj(obj.probe) .* DELTA(:,:,:,k);
 %         objectUpdateDenominator(row:row+obj.Np-1,col:col+obj.Np-1) = objectUpdateDenominator(row:row+obj.Np-1,col:col+obj.Np-1,:) + real(sum(abs(obj.probe).^2,3));
+        
+%                 objectUpdateNumerator(row:row+obj.Np-1,col:col+obj.Np-1,:) = objectUpdateNumerator(row:row+obj.Np-1,col:col+obj.Np-1,:) + sum(conj(obj.probe) .* DELTA(:,:,:,k),3);
+        objectUpdateNumerator(row:row+obj.Np-1,col:col+obj.Np-1,:) = objectUpdateNumerator(row:row+obj.Np-1,col:col+obj.Np-1,:) + conj(obj.probe) .* DELTA(:,:,:,k);
+        objectUpdateDenominator(row:row+obj.Np-1,col:col+obj.Np-1) = objectUpdateDenominator(row:row+obj.Np-1,col:col+obj.Np-1,:) + real(sum(abs(obj.probe).^2,3));
     end
     
     % regularization for SD updates
